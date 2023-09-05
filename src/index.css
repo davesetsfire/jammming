@@ -5,9 +5,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: red;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+ul {
+  list-style: none;
+}
+h1 {
+  color:rgb(44, 129, 150)
+}
+.playlist_with_tracks{
+  display: flex;
+  justify-content: space-evenly;
 }

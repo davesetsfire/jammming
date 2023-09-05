@@ -1,0 +1,4 @@
+#wrapper_playlist{
+    display: flex;
+    flex-direction: column;
+}

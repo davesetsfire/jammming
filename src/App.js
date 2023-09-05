@@ -1,23 +1,53 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Searchbar from "./Searchbar/searchbar";
+import SearchResults from "./SearchResults/searchResults";
+import Playlist from "./Playlist/playlist";
+import { useState } from "react";
+import songs from "./SongsDatabase";
+import playlistArray from "./Playlist/playlistmock";
 
 function App() {
+  const [input, setInput] = useState("");
+  const [results, setResults] = useState([]);
+
+  function handleSearch(e) {
+    const searchTerm = e.target.value;
+    setInput(searchTerm);
+  }
+
+  function handleOnSearch() {
+    const filteredResults = songs.filter((song) =>
+      song.artist.toLowerCase().includes(input.toLowerCase())
+    );
+    setResults(filteredResults);
+  }
+
+  const [playlists, setPlaylists] = useState(playlistArray);
+  function handleOnAddClick(newPlaylist) {
+    setPlaylists((prevPlaylist) => [newPlaylist, ...prevPlaylist]);
+  };
+   const [selectedTracks, setSelectedTracks] = useState([]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Searchbar
+        value={input}
+        onChange={handleSearch}
+        onSearch={handleOnSearch}/>
+
+      <div className="playlist_with_tracks">
+        <SearchResults 
+          result={results}
+          callback={setSelectedTracks}
+          selectedTracks={selectedTracks} />
+
+        <Playlist
+          onAddClick={handleOnAddClick}
+          playlists={playlists}
+          selectedTracks={selectedTracks}
+          callbackToRemove={setSelectedTracks} />
+          
+      </div>
     </div>
   );
 }

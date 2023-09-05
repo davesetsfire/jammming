@@ -1,0 +1,7 @@
+.ul {
+    color: rgb(44, 129, 150)
+}
+#result_wrapper{
+    display: flex;
+    flex-direction: column;
+}
