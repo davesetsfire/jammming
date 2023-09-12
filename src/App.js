@@ -3,49 +3,48 @@ import Searchbar from "./Searchbar/searchbar";
 import SearchResults from "./SearchResults/searchResults";
 import Playlist from "./Playlist/playlist";
 import { useState } from "react";
-import songs from "./SongsDatabase";
-import playlistArray from "./Playlist/playlistmock";
+
 
 function App() {
-  const [input, setInput] = useState("");
+  
+  
   const [results, setResults] = useState([]);
 
-  function handleSearch(e) {
-    const searchTerm = e.target.value;
-    setInput(searchTerm);
+  
+  function handleSearch(results) {
+    setResults(results);
+    alert(results);
   }
 
-  function handleOnSearch() {
-    const filteredResults = songs.filter((song) =>
-      song.artist.toLowerCase().includes(input.toLowerCase())
-    );
-    setResults(filteredResults);
-  }
 
-  const [playlists, setPlaylists] = useState(playlistArray);
-  function handleOnAddClick(newPlaylist) {
-    setPlaylists((prevPlaylist) => [newPlaylist, ...prevPlaylist]);
-  };
    const [selectedTracks, setSelectedTracks] = useState([]);
 
+   function addTrack(changedTrack) {
+    setSelectedTracks((prev) => [...prev, changedTrack])
+   }
+   
+   function deleteTracks(trackToRemove) {
+    const playlistWithoutRemoved = selectedTracks.filter((song) => song.id !==trackToRemove)
+    setSelectedTracks(playlistWithoutRemoved)
+   }
+  
   return (
     <div className="App">
       <Searchbar
-        value={input}
-        onChange={handleSearch}
-        onSearch={handleOnSearch}/>
+        onGetResults={handleSearch}
+        />
+        
 
       <div className="playlist_with_tracks">
         <SearchResults 
           result={results}
-          callback={setSelectedTracks}
-          selectedTracks={selectedTracks} />
+          addTrack={addTrack}
+          selectedTracks={selectedTracks}
+           />  
 
         <Playlist
-          onAddClick={handleOnAddClick}
-          playlists={playlists}
           selectedTracks={selectedTracks}
-          callbackToRemove={setSelectedTracks} />
+          callbackToRemove={deleteTracks} />
           
       </div>
     </div>

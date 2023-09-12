@@ -1,29 +1,36 @@
-import React, { useState, useCallback } from "react";
-import styles from "./searchbar.module.css"
+import React, { useState } from "react";
+import styles from "./searchbar.module.css";
+import Spotify from "../spotify";
 
 const SearchBar = (props) => {
-    
-    const [input, setInput] = useState('');
-    const handleChange = useCallback((event) => {
-        setInput(event.target.value)
-    }, [])
-    
-    
-    const search =() => {
-        props.onSearch(input);
-    };
+  const [input, setInput] = useState('');
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  }
 
+  const [submittedValue, setSubmittedValue] = useState('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedValue(input);
+    console.log(submittedValue);
+  };
 
-    return (
-        <>
-        <div id="background" className={styles.div}>
-        <input type="text" 
-                onChange={handleChange}/>
-        <button type="submit"
-                onClick={search}
-                >Search</button>
-        </div>
-        </>
-    )
-}
+  function handleResults(results) {
+    props.onGetResults(results);
+    
+  }
+
+  return (
+    <>
+      <div id="background" className={styles.div}>
+        <form onSubmit={handleSubmit} >
+          <input type="text" onChange={handleChange} value={input}></input>
+          <button type="submit">Search</button>
+        </form>
+        <Spotify searchTerm={submittedValue} onSearch={handleResults} />
+      </div>
+    </>
+  );
+};
+
 export default SearchBar;

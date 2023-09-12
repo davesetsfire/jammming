@@ -1,25 +1,26 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./playlist.module.css";
 
 
 
 function Playlist({selectedTracks, callbackToRemove}) {
-  const [input, setInput] = useState("");
+
+  const [playlistName, setPlaylistName] = useState("");
   function handleInputChange(event) {
-    setInput(event.target.value);
+    setPlaylistName(event.target.value);
   }
    
-  const [removed, setRemoved] = useState([]);
   const handleRemove = (removeId) => {
-     const songToRemove = selectedTracks.find((item) => item.id === removeId);
-     const updatedPlaylist = selectedTracks.filter(song => song !== songToRemove);
-     setRemoved(updatedPlaylist);
-     console.log(removed);
+     callbackToRemove(removeId);
   };
+
+  const urisToSend =[];
+  for ( let i =0; i < selectedTracks.length; i++) {
+    urisToSend.push(selectedTracks[i].uri);
+    console.log(urisToSend);
+  }
   
-  useEffect(() => {
-    callbackToRemove(removed);}, [callbackToRemove, removed]);
 
   return (
     <>
@@ -28,7 +29,7 @@ function Playlist({selectedTracks, callbackToRemove}) {
         <input
           type="text"
           placeholder="Enter your new Playlist"
-          value={input}
+          value={playlistName}
           onChange={handleInputChange}
         ></input>
         <ul className={styles.ul}>
