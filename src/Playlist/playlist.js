@@ -5,7 +5,7 @@ import styles from "./playlist.module.css";
 
 
 function Playlist({selectedTracks, callbackToRemove}) {
-
+  console.log(selectedTracks)
   const [playlistName, setPlaylistName] = useState("");
   function handleInputChange(event) {
     setPlaylistName(event.target.value);
@@ -14,14 +14,14 @@ function Playlist({selectedTracks, callbackToRemove}) {
   const handleRemove = (removeId) => {
      callbackToRemove(removeId);
   };
-
+/*
   const urisToSend =[];
   for ( let i =0; i < selectedTracks.length; i++) {
     urisToSend.push(selectedTracks[i].uri);
     console.log(urisToSend);
   }
   
-
+*/
   return (
     <>
       <div id="wrapper_playlist" className={styles}>
@@ -33,10 +33,10 @@ function Playlist({selectedTracks, callbackToRemove}) {
           onChange={handleInputChange}
         ></input>
         <ul className={styles.ul}>
-            {selectedTracks.map((song) => (
-                <li key={song.id}>
-                 <p>{song.title} - {song.artist}</p>
-                 <p>{song.album} - {song.id}</p>  
+            {
+             selectedTracks.map((song, index) => (
+                <li key={index}>
+                 <p>{song.name}</p>
                  <button onClick={() => handleRemove(song.id)} >remove</button>   
                 </li>
             ))

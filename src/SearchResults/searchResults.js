@@ -5,32 +5,33 @@ import styles from "./searchResults.module.css";
 
 function SearchResults(props) {
     const {result, addTrack, selectedTracks} = props;
-
     
     const addToPlaylist = (targetId) => {
-        const selectedSong = result.find((item) => item.id === targetId);
+        console.log(targetId);
+       
+        const selectedSong = result.tracks.items.find((item) => item.id === targetId);
+        console.log(selectedSong)
         const included = selectedTracks.includes(selectedSong);
             if(!included) {
                 addTrack(selectedSong)
             }
     
     };
-    /*const objectTracks = result.tracks;
-    console.log(result.tracks)*/
+    
     return (
         <>
         <div id="result_wrapper" className={styles}>
         <h1>Your Results</h1>
         <ul className={styles.ul}>
-            {
-            /*objectTracks.map((song) => (
-                <li key={song.id}>
-                 <p>{song.title} - {song.artist}</p>
-                 <p>{song.album} - {song.id}</p>  
+            {      
+            Object.keys(result).length !==0 && result.tracks.items.map((song, index) => (
+                <li key={index}>
+                 <p>{song.name} {song.track} </p>
                  <button onClick={() => addToPlaylist(song.id)} >Add to Playlist</button>   
                 </li>
-            ))*/
+            )) 
             }
+            
         </ul>
         </div>
         </>

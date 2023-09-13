@@ -17,6 +17,7 @@ const SearchBar = (props) => {
   };
 
   function handleResults(results) {
+    setSubmittedValue('');
     props.onGetResults(results);
     
   }
@@ -28,7 +29,7 @@ const SearchBar = (props) => {
           <input type="text" onChange={handleChange} value={input}></input>
           <button type="submit">Search</button>
         </form>
-        <Spotify searchTerm={submittedValue} onSearch={handleResults} />
+        <Spotify searchTerm={submittedValue} onSearch={handleResults}  />
       </div>
     </>
   );
