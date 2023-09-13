@@ -7,14 +7,15 @@ let expiresIn = null;
 function Spotify({searchTerm, onSearch}) {
   
   function loginToSpotify() {
-    var client_id = "2dbe6fc8870d4cc1be69daaf5ab7b650";
-    var redirect_uri = "http://localhost:3000";
-    var url = "https://accounts.spotify.com/authorize";
-    url += "?response_type=token";
-    url += "&client_id=" + encodeURIComponent(client_id);
-    url += "&redirect_uri=" + encodeURIComponent(redirect_uri);
-    window.location.href = url;
+      var client_id = "2dbe6fc8870d4cc1be69daaf5ab7b650";
+      var redirect_uri = "http://localhost:3000";
+      var url = "https://accounts.spotify.com/authorize";
+      url += "?response_type=token";
+      url += "&client_id=" + encodeURIComponent(client_id);
+      url += "&redirect_uri=" + encodeURIComponent(redirect_uri);
+      window.location.href = url;
   }
+
 
   function getAccessToken() {
     if (accessToken) {
@@ -46,7 +47,7 @@ function Spotify({searchTerm, onSearch}) {
       console.log(term);
       return console.log("no access token");
     }
-
+    if (term) {
     fetch(
       `https://api.spotify.com/v1/search?q=${encodeURIComponent(
         term
@@ -64,7 +65,7 @@ function Spotify({searchTerm, onSearch}) {
         throw new Error("not ok");
       })
       .then((data) => {
-        //onSearch(data);
+        onSearch(data);
         console.log(data);
       })
       .catch(
@@ -72,6 +73,7 @@ function Spotify({searchTerm, onSearch}) {
           console.log(error);
         });
       }
+    }
         ,
         [searchTerm, onSearch]
       

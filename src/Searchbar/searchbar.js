@@ -12,6 +12,7 @@ const SearchBar = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmittedValue(input);
+    setInput('');
     console.log(submittedValue);
   };
 
