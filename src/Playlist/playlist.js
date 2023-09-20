@@ -2,26 +2,28 @@ import React from "react";
 import { useState } from "react";
 import styles from "./playlist.module.css";
 
-
-
-function Playlist({selectedTracks, callbackToRemove}) {
-  console.log(selectedTracks)
+function Playlist({ selectedTracks, callbackToRemove, saveInSpotify}) {
   const [playlistName, setPlaylistName] = useState("");
   function handleInputChange(event) {
     setPlaylistName(event.target.value);
   }
-   
+
   const handleRemove = (removeId) => {
-     callbackToRemove(removeId);
+    callbackToRemove(removeId);
   };
-/*
-  const urisToSend =[];
-  for ( let i =0; i < selectedTracks.length; i++) {
-    urisToSend.push(selectedTracks[i].uri);
+  function handleSaving() {
+    const urisToSend = [];
+    for (let i = 0; i < selectedTracks.length; i++) {
+      urisToSend.push(selectedTracks[i].uri);
+    }
     console.log(urisToSend);
+    if (urisToSend.length > 0 && playlistName !== '') {
+    saveInSpotify(playlistName, urisToSend);
+    } else {
+      alert('please add Song or Plalist Name')
+    }
   }
-  
-*/
+
   return (
     <>
       <div id="wrapper_playlist" className={styles}>
@@ -33,16 +35,14 @@ function Playlist({selectedTracks, callbackToRemove}) {
           onChange={handleInputChange}
         ></input>
         <ul className={styles.ul}>
-            {
-             selectedTracks.map((song, index) => (
-                <li key={index}>
-                 <p>{song.name}</p>
-                 <button onClick={() => handleRemove(song.id)} >remove</button>   
-                </li>
-            ))
-            }
+          {selectedTracks.map((song, index) => (
+            <li key={index}>
+              <p>{song.name}</p>
+              <button onClick={() => handleRemove(song.id)}>remove</button>
+            </li>
+          ))}
         </ul>
-        <button>Save in Spotify</button>
+        <button onClick={handleSaving} >Save in Spotify</button>
       </div>
     </>
   );

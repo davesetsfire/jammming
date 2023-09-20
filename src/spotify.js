@@ -1,48 +1,27 @@
-import { useEffect } from "react";
+import { useEffect} from "react";
 import React from "react";
 
-let accessToken = null;
-let expiresIn = null;
 
-function Spotify({searchTerm, onSearch}) {
+
+function Spotify({searchTerm, onSearch, accessToken}) {
   
   function loginToSpotify() {
       var client_id = "2dbe6fc8870d4cc1be69daaf5ab7b650";
       var redirect_uri = "http://localhost:3000";
       var url = "https://accounts.spotify.com/authorize";
+      var scope = "user-modify-playback-state playlist-modify-private playlist-modify-public";
       url += "?response_type=token";
       url += "&client_id=" + encodeURIComponent(client_id);
+      url += '&scope=' + encodeURIComponent(scope);
       url += "&redirect_uri=" + encodeURIComponent(redirect_uri);
       window.location.href = url;
   }
+  
 
-
-  function getAccessToken() {
-    if (accessToken) {
-      return accessToken;
-    }
-    const accessTokenMatch = window.location.href.match(/access_token=([^&]*)/);
-    const expiresInMatch = window.location.href.match(/expires_in=([^&]*)/);
-
-    if (accessTokenMatch && expiresInMatch) {
-      accessToken = accessTokenMatch[1];
-      expiresIn = expiresInMatch[1];
-
-      window.setTimeout(() => {
-        accessToken = null;
-        window.history.pushState("accessToken", null, "/");
-      }, expiresIn*1000);
-
-      
-      return accessToken;
-    } else {
-      return null;
-    }
-  }
 
   useEffect(() => {
     const term = searchTerm;
-    const token = getAccessToken();
+    const token = accessToken;
     if (!token) {
       console.log(term);
       return console.log("no access token");
@@ -73,17 +52,18 @@ function Spotify({searchTerm, onSearch}) {
           console.log(error);
         });
       }
-    }
-        ,
-        [searchTerm, onSearch]
+    },[searchTerm, accessToken, onSearch]
       
   );
 
+
   return (
     <>
+      <div>
       <button className="login" onClick={loginToSpotify}>
         Login
       </button>
+      </div>
     </>
   );
 }
